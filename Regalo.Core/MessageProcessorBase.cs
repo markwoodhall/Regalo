@@ -42,12 +42,9 @@ namespace Regalo.Core
 
         private List<HandlerDescriptor> GetHandlerDescriptors(Type messageHandlerOpenType, Type messageType)
         {
-            var isEventHandlingResultEvent = IsEventHandlingResultEvent(messageType);
             var inspector = new TypeInspector();
 
-            var messageTypes = isEventHandlingResultEvent
-                                   ? new[] { messageType }
-                                   : inspector.GetTypeHierarchy(messageType);
+            var messageTypes = inspector.GetTypeHierarchy(messageType);
 
             var targets = messageTypes.Select(x => new { MessageType = x, HandlerType = messageHandlerOpenType.MakeGenericType(x) })
                                       .SelectMany(
